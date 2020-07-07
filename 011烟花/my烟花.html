@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>myfirework</title>
+    <style>
+        .box {
+            width: 600px;
+            height: 300px;
+            background-color: #080203;
+            overflow: hidden;
+            position: relative;
+            margin: 100px auto;
+            border: 2px solid palevioletred;
+        }
+
+        .fireball {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="box"></div>
+</body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    // 添加事件处理函数
+    function Myfire() {
+        // 获取事件盒子
+        this.fire1 = document.querySelector(".box")
+
+        // 执行事件监听函数
+        this.bindEvent();
+    } 
+
+    // 事件监听函数
+    Myfire.prototype.bindEvent = function () {
+        // 执行烟花自动爆炸功能
+         this.autoFire();
+        // 区分this指向，此时this指向为实例对象
+        var self = this;
+        // 点击事件处理函数
+     
+        self.fire1.onclick = function (ele) {
+
+
+            // IE兼容
+            var e = ele || event;
+            // 创建新圆点函数
+            var newball = self.createnewball();
+            // 确定圆点坐标
+            newball.style.left = ele.offsetX + "px";
+           
+            // 圆点的动画
+            $(newball).animate({
+                top: ele.offsetY
+            }, 1000, function () {
+                // 圆点到达之后，删除圆点
+                newball.remove();
+                // 烟花爆炸效果
+                self.blast(ele.offsetX,ele.offsetY);
+            })
+        }
+    }
+
+
+
+
+
+    //    创建圆点（div）函数
+    Myfire.prototype.createnewball = function () {
+        // 给圆点添加样式
+        var newfire = document.createElement("div")
+        newfire.className = "fireball";
+        // 给圆点添加随机颜色
+        newfire.style.backgroundColor = "#" + Math.round(Math.random() * parseInt("ffffff", 16)).toString(16).padStart(6, "0")
+        // 给fire1创建子元素
+        this.fire1.appendChild(newfire)
+        // 返回div
+        return newfire;
+ 
+
+    }
+    //    烟花空中爆炸效果
+    Myfire.prototype.blast = function (x,y) {
+        // 初始角度
+        var deg = 0;
+        // 设置圆点爆炸圆的半径
+        var r = 80;
+        // 设置爆炸圆点的个数
+        for (var i = 0; i < 30; i++) {
+            // 获取创建的圆点位置
+            var fire = this.createnewball(x, y);
+            // 创建圆点的x值设置
+            fire.style.left = x + "px";
+            // 创建圆点的y值设置
+            fire.style.top = y + "px";
+            // 计算的deg的角度如下：360/圆点个数
+            deg += 12;
+            // 计算圆点所在位置的x值
+            var targetx = Math.round(Math.cos(Math.PI / 180 * deg)) * r;
+            //   计算圆点所在位置的y值
+            var targety = Math.round(Math.sin(Math.PI / 180 * deg)) * r;
+
+            // 圆点爆炸动画
+            $(fire).animate({
+                // 圆点爆炸是x和y的值
+                top: targety + y,
+                left: targetx + x
+            }, function () {
+                // 圆点爆炸后删除圆点
+                this.remove();
+            })
+        }
+    }
+    //    烟花自动爆炸效果
+     
+     Myfire.prototype.autoFire = function(){
+            var self = this;
+            setInterval(function(){
+                self.fire1.onclick({
+                    offsetX : Math.round( Math.random() * self.fire1.offsetWidth) + 100,
+                    offsetY : Math.round( Math.random() * self.fire1.offsetHeight) + 100
+                });
+            }, 1000)
+        }
+
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // 实例化对象
+    var _fire = new Myfire();
+
+
+</script>
+
+</html>

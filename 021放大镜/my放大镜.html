@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的放大镜</title>
+    <link rel="stylesheet" href="../021放大镜/style/mystyle.css">
+</head>
+
+<body>
+    <div class="left">
+        <div class="small_box">
+            <!-- 上层参照层 -->
+            <div class="upper"></div>
+            <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg"
+                alt="">
+            <!-- 小盒子 -->
+            <div class="lower"></div>
+        </div>
+        <div class="choice">
+            <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg"
+                alt="">
+            <img src="https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3252521864,872614242&fm=26&gp=0.jpg" alt="">
+        </div>
+    </div>
+    <div class="right">
+        <img src="https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg" alt="">
+    </div>
+</body>
+ <script>
+     function magnifier(){
+         this.squer = document.querySelector(".lower")
+         this.small = document.querySelector(".small_box")
+         this.small_img = document.querySelector(".small_box img")
+         this.right = document.querySelector(".right")
+         this.right_img = document.querySelector(".right img")
+        this.index= 0;
+        this.choice = document.querySelectorAll(".choice img")
+        this.squer_size = {
+            width : parseInt(getComputedStyle(this.squer).width),
+            height : parseInt(getComputedStyle(this.squer).height)
+        }
+        this.small_size = {
+            width:this.small.offsetWidth,
+            height:this.small.offsetHeight
+        }
+        this.right_size={
+			width  : parseInt(getComputedStyle(this.right).width),
+			height : parseInt(getComputedStyle(this.right).height)
+        }
+        this.right_img_size = {
+			width  : parseInt(getComputedStyle(this.right_img).width),
+			height : parseInt(getComputedStyle(this.right_img).height)
+		}
+        this.bindEvent();
+     }
+     
+     magnifier.prototype.bindEvent = function(){
+         var self = this;
+         
+         this.small.onmouseover = function(){
+			self.squer.style.display = "block";
+			self.right.style.display    = "block";
+		}
+        this.small.onmouseout = function(){
+         self.squer.style.display = "none";
+			self.right.style.display    = "none";
+         }
+         this.small.onmousemove = function (ele){
+             var e = ele ||event;
+             var _left = e.offsetX - 50;
+			var _top  = e.offsetY - 50;
+            if(_left < 0 ){
+				_left = 0;
+			}
+			if(_top < 0 ){
+				_top = 0;
+			}
+            var max_left =  self.small_size.width - self.squer_size.width - 8 ;
+            if( _left > max_left ){
+				_left = max_left;
+			}
+
+			var max_top = self.small_size.height - self.squer_size.height - 8 ;
+			
+			if( _top > max_top){
+				_top = max_top;
+			}
+            self.squer.style.left = _left  + "px";
+			self.squer.style.top  = _top   + "px";
+              
+            var prop_left = (_left / max_left).toFixed(2);
+			var prop_top  = (_top  / max_top).toFixed(2);
+
+            var right_box_max_left = self.right_img_size.width - self.right_size.width;
+			var right_box_max_top  = self.right_img_size.height - self.right_size.height;
+              
+            self.right_img.style.left = -right_box_max_left * prop_left + "px";
+			self.right_img.style.top = -right_box_max_top * prop_top + "px";
+         }
+
+         for(var i = 0 ; i < this.choice.length ; i ++){
+			this.choice[i].index = i;
+			this.choice[i].onmouseover = function(){
+				self.index = this.index;
+				self.small_img.src = this.src;
+				self.right_img.src = this.src;
+			}
+		}
+     }
+     var ma = new magnifier();
+ </script>
+
+</html>

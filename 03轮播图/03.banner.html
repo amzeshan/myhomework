@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #container{
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            width: 100%;
+            height: 350px;
+            margin: 50px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #prev_btn,#next_btn{
+            width: 60px;
+            height: 60px;
+            background: rgba(39, 39, 39, .7);
+            display: inline-block;
+            border-radius: 50%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 30px;
+            color: #fff;
+            position: absolute;
+            top: 143px;
+            left: 15px;
+            z-index: 999;
+            cursor: pointer;
+        }
+        #next_btn{
+            position: absolute;
+            top: 143px;
+            left: 1315px;
+        }
+        #prev_btn img{
+            margin: 7px 5px 0 0;
+            width: 45px;
+            height: 45px;
+        }
+        #next_btn img{
+            margin: 7px 0 0 5px;
+            width: 45px;
+            height: 45px;
+        }
+        /* #banner_container{
+            width: 600%;
+        } */
+        #banner_container{
+            position: absolute;
+            /* transition: all .5s; */
+            width: 8280px;
+        }
+        #banner_container li{
+            list-style: none;
+            float: left;
+            width: 1380px;
+            height: 350px;
+        }
+        #banner_container li img{
+            width: 1380px;
+            height: 350px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <a id="prev_btn"><img src="img/zuo-copy.png" /></a>
+        <a id="next_btn"><img src="img/you-copy.png" /></a>
+        <ul id="banner_container">
+            <li><img src="https://img.zcool.cn/community/01f1515ca2ca6da801214168c2ae09.jpg@1380w" alt=""></li>
+            <li><img src="https://img.zcool.cn/community/0138ec5ca44892a801208f8be4c0ea.jpg@1380w" alt=""></li>
+            <li><img src="https://img.zcool.cn/community/01b73c5ca2ca82a801214168fa83fa.jpg@1380w" alt=""></li>
+            <li><img src="https://img.zcool.cn/community/01037e5ca2ca93a801208f8b8d457d.jpg@1380w" alt=""></li>
+            <li><img src="https://img.zcool.cn/community/01da355ca419dfa8012141682afdd2.jpg@1380w" alt=""></li>
+            <li><img src="https://img.zcool.cn/community/01f1515ca2ca6da801214168c2ae09.jpg@1380w" alt=""></li>
+        </ul>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // 1. 通过点击按钮控制 index 改变;
+        // 2. 根据index改变去计算 banner_container 元素的left值;
+        function Banner(){
+            this.prev_btn = document.querySelector("#prev_btn");
+            this.next_btn = document.querySelector("#next_btn");
+            this.slide_container = document.querySelector("#banner_container");
+            this.slides = document.querySelectorAll("#banner_container li");
+
+            this.index = 0;
+            this.bindEvent();
+        }
+        Banner.prototype.bindEvent = function(){
+            var self = this;
+            this.prev_btn.onclick = function(){
+                if(self.index === 0){
+                    self.index = self.slides.length - 1;
+                }else{
+                    self.index --;
+                }
+                self.changeSlide();
+            }
+            this.next_btn.onclick = function(){
+                
+                if(self.index === self.slides.length - 1){
+                    self.slide_container.style.left = 0;
+                    self.index = 1;
+                }else{
+                    self.index ++;
+                }
+                self.changeSlide();
+            }
+        }
+        Banner.prototype.changeSlide = function(){
+            // this.slide_container.style.left = -this.index * 1380 + "px"
+            $(this.slide_container)
+            .stop()
+            .animate({
+                left : -this.index *1380,            },1000)
+        }
+        new Banner();
+
+    </script>
+   
+</body>
+</html>
