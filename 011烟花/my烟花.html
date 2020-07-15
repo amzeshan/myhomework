@@ -105,9 +105,9 @@
             // 计算的deg的角度如下：360/圆点个数
             deg += 12;
             // 计算圆点所在位置的x值
-            var targetx = Math.round(Math.cos(Math.PI / 180 * deg)) * r;
+            var targetx = Math.round(Math.cos(Math.PI / 180 * deg)* r) ;
             //   计算圆点所在位置的y值
-            var targety = Math.round(Math.sin(Math.PI / 180 * deg)) * r;
+            var targety = Math.round(Math.sin(Math.PI / 180 * deg) * r);
 
             // 圆点爆炸动画
             $(fire).animate({
